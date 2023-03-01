@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="shadow p-5 mb-5 bg-body rounded">
+        <div class="text-center adjustment-bottom"><h2>Sign Up Page</h2></div>
+            <form method="POST">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input required type="email" class="form-control" name="username" aria-describedby="usernameHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input required type="password" class="form-control" name="password">
+                </div>
+               <div class="mb-3">
+                    <label for="password2" class="form-label">Password Confirmation</label>
+                    <input required type="password" class="form-control" name="password2">
+               </div>
+                <button type="submit" class="btn btn-outline-dark">Sign Up</button>
+            </form>
+    </div>
+{% endblock %}

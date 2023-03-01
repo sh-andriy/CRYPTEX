@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="text-center adjustment-bottom">
+        <h2>Login Page</h2>
+    </div>
+        <form action="" method="post">
+
+            <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input required type="email" class="form-control" name="username" aria-describedby="usernameHelp">
+
+            </div>
+            <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input required type="password" class="form-control" name="password">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+{% endblock %}
