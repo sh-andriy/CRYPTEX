@@ -11,3 +11,5 @@ MarkupSafe==2.1.2
 SQLAlchemy==2.0.4
 typing_extensions==4.5.0
 Werkzeug==2.2.2
+pylint==2.16.3
+
