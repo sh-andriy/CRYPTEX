@@ -1,8 +1,15 @@
+from os import path
 from setuptools import setup, find_packages
+
+
+# Get the version from the VERSION file
+with open(path.join(path.dirname(__file__), 'VERSION')) as f:
+    version = f.read().strip()
+
 
 setup(
     name='CRYPTEX',
-    version='0.5.0',
+    version=version,
     author='Andrew Sheredko',
     author_email='sheredko.andriy@gmail.com',
     description='CRYPTEX is a web-application which allows user to easily view information '

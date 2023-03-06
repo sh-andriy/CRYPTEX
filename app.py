@@ -14,7 +14,7 @@ DB_PASSWORD = environ.get('DB_PASSWORD', 'password')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DB_USERNAME}:{DB_PASSWORD}@localhost/users'
 
 # initialising database
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 
 @app.route('/')

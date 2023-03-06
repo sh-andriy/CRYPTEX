@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/sh-andriy/CRYPTEX/badge.svg?branch=master)](https://coveralls.io/github/sh-andriy/CRYPTEX?branch=master)
+
 <h1>The goal of a Project</h1>
 <hr>
 <p>
