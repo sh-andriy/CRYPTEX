@@ -1,0 +1,8 @@
+language: python
+python:
+  - "3.10"
+install:
+  - pip install pylint
+script:
+  - pylint Epam_Final_Project --rcfile=pylint.cfg
+  - pylint app.py
