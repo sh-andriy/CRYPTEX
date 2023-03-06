@@ -4,5 +4,4 @@ python:
 install:
   - pip install pylint
 script:
-  - pylint Epam_Final_Project --rcfile=pylint.cfg
-  - pylint app.py
+  - find . -type f -name "*.py" -not -path './venv*' | xargs pylint --rcfile=pylint.cfg
