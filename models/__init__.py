@@ -50,20 +50,16 @@ class Coin(db.Model):
 
 class Balance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.DECIMAL)
+    amount = db.Column(db.DECIMAL(15, 7))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     coin_id = db.Column(db.Integer, db.ForeignKey('coin.id'))
 
     def to_dict(self):
-        coin = Coin.query.get(id=self.coin_id)
-        url = f'https://api.binance.com/api/v3/ticker/price?symbol={coin.index}'
-
-        # https://www.binance.me/api/v3/ticker/price?symbols=%5B%22DOGEUSDT%22,%22BTCUSDT%22%5D
-
         return {
             'id': self.id,
-            'amount': str(self.amount),
-            'value': requests.get(url).json()
+            'user': self.user_id,
+            'coin': self.coin.abbreviation,
+            'amount': "{:.7f}".format(self.amount).rstrip('.0'),
         }
 

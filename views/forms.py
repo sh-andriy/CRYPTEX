@@ -22,7 +22,7 @@ class LoginForm(FlaskForm):
 
 class BalanceForm(FlaskForm):
     coin = SelectField('Coin', choices=[])
-    amount = DecimalField('Amount', validators=[DataRequired(), NumberRange(min=0, max=10000)])
+    amount = DecimalField('Amount', validators=[DataRequired()])
     submit = SubmitField('Add')
 
     def validate_amount(self, amount):
@@ -30,5 +30,7 @@ class BalanceForm(FlaskForm):
             digits_len = abs(amount.data.as_tuple().exponent)
             if digits_len > 7:
                 raise ValueError("Sadly we only support only 7 values after comma")
+            if amount.data > 100000 or amount.data < 0.0000001:
+                raise ValueError("Sadly we only support values from range 0.0000001 to 100000")
         except ValueError as error:
             raise ValidationError(str(error))

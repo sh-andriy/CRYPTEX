@@ -47,9 +47,30 @@ class CoinApi(Resource):
 
 
 class BalanceApi(Resource):
-    def get(self):
-        balances = Balance.query.all()
-        return [balance.to_dict() for balance in balances], 200
+    def get(self, id: int = None):
+        balances = Balance.query.filter(Balance.user_id == id)
+
+        coind_indexes = "%22,%22".join({balance.coin.index for balance in balances})
+
+        binance_api_url = f"https://www.binance.me/api/v3/ticker/price?symbols=%5B%22{coind_indexes}%22%5D"
+        indexes = requests.get(binance_api_url).json()
+        prices = {index['symbol']: Decimal(index['price']) for index in indexes}
+
+        response = []
+        for balance in balances:
+            price = prices[balance.coin.index]
+            response.append(
+                {
+                    **balance.to_dict(),
+                    'value': '{:,.2f}'.format(price * balance.amount),
+                }
+            )
+        return response, 200
+
+    def delete(self, id: int = None):
+        Balance.query.filter_by(id=id).delete()
+        db.session.commit()
+        return {}, 204
 
     def post(self):
         amount = request.json.get('amount')

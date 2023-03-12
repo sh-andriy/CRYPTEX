@@ -30,7 +30,7 @@ def create_app():
 
     api.add_resource(UserApi, '/api/v1/users', '/api/v1/users/<int:id>')
     api.add_resource(CoinApi, '/api/v1/coins')
-    api.add_resource(BalanceApi, '/api/v1/balances')
+    api.add_resource(BalanceApi, '/api/v1/balances', '/api/v1/balances/<int:id>')
     api.init_app(app)
 
     return app

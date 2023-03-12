@@ -30,28 +30,34 @@ def home():
     """
     function that renders home.html
     """
-    # response = requests.post(
-    #     url=f'{request.url_root}api/v1/balances/{current_user.id}',
-    # )
-    return render_template('home.html')
+    context = {}
+    if current_user.is_authenticated:
+        response = requests.get(url=f'{request.url_root}api/v1/balances/{current_user.id}')
+        if response.status_code == 200:
+            context = {'balances': response.json()}
+    return render_template('home.html', context=context)
 
 
 @blueprint.route('/add-balance', methods=['GET', 'POST'])
 @login_required
 def add_balance():
     form = BalanceForm()
-    available_coins = [
-        (coin['id'], coin['abbreviation'])
-        for coin in requests.get(url=f'{request.url_root}api/v1/coins').json()
-    ]
-    form.coin.choices = available_coins
+
+    coins = requests.get(url=f'{request.url_root}api/v1/coins')
+
+    if coins.status_code == 200:
+        available_coins = [
+            (coin['id'], coin['abbreviation'])
+            for coin in coins.json()
+        ]
+        form.coin.choices = available_coins
 
     if form.validate_on_submit():
         response = requests.post(
             url=f'{request.url_root}api/v1/balances',
             json={
                 'user_id': current_user.id,
-                'coin_id': form.coin.data,
+                'coin_id': int(form.coin.data),
                 'amount': str(form.amount.data)
             }
         )
@@ -61,6 +67,16 @@ def add_balance():
         else:
             flash('Something went wrong, please try again!')
     return render_template('balance.html', form=form)
+
+
+@blueprint.route('/delete-balance/<int:balance_id>', methods=['GET', 'POST'])
+@login_required
+def delete_balance(balance_id: int):
+    response = requests.delete(url=f'{request.url_root}api/v1/balances/{balance_id}')
+    if response.status_code == 204:
+        flash("Balance deleted")
+
+    return redirect(url_for('blueprint.home'))
 
 
 @blueprint.route('/register', methods=['GET', 'POST'])

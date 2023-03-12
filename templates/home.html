@@ -6,42 +6,31 @@
     </div>
     <div class="shadow p-5 mb-5 bg-body-tertiary rounded ">
 
-        <div class="row justify-content-md-center adjustment-bottom">
-{#            if user is_authenticated than we can show him this #}
-{#            we can even add button when logged in (add widget) and #}
-{#            display him his widgets #}
-            <div class="col-3">
-                <div class="card">
-                  Widget 1
+        {% if current_user.is_authenticated %}
+            {% if context.balances %}
+                <div class="row ">
+                    {% for balance in context.balances %}
+                        <div class="col-lg-4 card-style">
+                            <div class="border card-content">
+                                <h2>{{ balance.coin }}</h2>
+                                <div>
+                                    Amount: {{ balance.amount }}
+                                </div>
+                                <div>
+                                    Value: {{ balance.value }}
+                                </div>
+                                <a class="btn btn-outline-danger" href="{{ url_for('blueprint.delete_balance', balance_id=balance.id)}}">Delete</a>
+                            </div>
+
+                        </div>
+                    {% endfor %}
                 </div>
-            </div>
-            <div class="col-3">
-                <div class="card">
-                  Widget 2
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card">
-                  Widget 3
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-md-center">
-            <div class="col-3">
-                <div class="card">
-                  Widget 4
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card">
-                  Widget 5
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card">
-                  Widget 6
-                </div>
-            </div>
-        </div>
+            {% else %}
+                <h1>Let's add our first balance $$$</h1>
+            {% endif %}
+        {% else %}
+            <h1>Join US :)</h1>
+        {% endif %}
+
     </div>
 {% endblock %}
