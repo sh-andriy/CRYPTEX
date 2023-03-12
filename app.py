@@ -1,45 +1,37 @@
 from os import environ
-# from datetime import datetime
 
-from flask import Flask, render_template
-# from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
+from flask_migrate import Migrate
 
-
-app = Flask(__name__)
-
-DB_USERNAME = environ.get('DB_USERNAME', 'username')
-DB_PASSWORD = environ.get('DB_PASSWORD', 'password')
-
-# adding database
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DB_USERNAME}:{DB_PASSWORD}@localhost/CRYPTEX'
-
-# initialising database
-# db = SQLAlchemy(app)
+from views import blueprint
+from models import db
+from service import login_manager
+from rest import api, UserApi, CoinApi, BalanceApi
 
 
-@app.route('/')
-def home():
-    """
-    function that renders home.html
-    """
-    return render_template('home.html')
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
+    # adding database
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{environ.get("DB_USERNAME")}:{environ.get("DB_PASSWORD")}'\
+                                            '@localhost/CRYPTEX'
 
-@app.route('/register')
-def register():
-    """
-    function that renders register.html
-    """
-    return render_template('register.html')
+    app.register_blueprint(blueprint)
 
+    # initialising database
+    db.init_app(app)
+    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
 
-@app.route('/login')
-def login():
-    """
-    function that renders login.html
-    """
-    return render_template('login.html')
+    # Flask_Login manager
+    login_manager.init_app(app)
+    login_manager.login_view = 'blueprint.login'
 
+    api.add_resource(UserApi, '/api/v1/users', '/api/v1/users/<int:id>')
+    api.add_resource(CoinApi, '/api/v1/coins')
+    api.add_resource(BalanceApi, '/api/v1/balances')
+    api.init_app(app)
 
-if __name__ == '__main__':
-    app.run()
+    return app
+
