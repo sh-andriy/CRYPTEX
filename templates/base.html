@@ -17,6 +17,14 @@
         <div class="col-12">
             <h1 class="mt-2 text-center">CRYPTEX</h1>
             <hr class="mt-0 mb-4">
+
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Holy guacamole!</strong> {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+            {% endfor %}
+
             {% block body %}
             {% endblock %}
         </div>
@@ -24,7 +32,6 @@
 </div>
 
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

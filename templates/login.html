@@ -1,23 +1,27 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="text-center adjustment-bottom">
-        <h2>Login Page</h2>
-    </div>
-        <form action="" method="post">
-
-            <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input required type="email" class="form-control" name="username" aria-describedby="usernameHelp">
-
-            </div>
-            <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input required type="password" class="form-control" name="password">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-
-        </form>
+    <div class="shadow p-5 mb-5 bg-body rounded">
+        <div class="text-center adjustment-bottom"><h2>Login Page</h2></div>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(size=30, class="form-control") }}
+                    {% for error in form.email.errors %}
+                        <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(size=30, class="form-control") }}
+                    {% for error in form.password.errors %}
+                        <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
+                </div>
+                {{ form.submit(class="btn btn-outline-dark") }}
+            </form>
+            <br>
+            Not a member? <a class="link-primary" href="{{ url_for('blueprint.register')}}">Register here</a>
     </div>
 {% endblock %}

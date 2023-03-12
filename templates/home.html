@@ -1,32 +1,51 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="text-center adjustment-bottom fst-italic">
-        <h2>Home Page</h2>
-    </div>
+    {% if current_user.is_authenticated %}
+        <form class="adjustment-bottom" method="POST" action="{{ url_for('blueprint.home') }}">
+            <div class="row">
+                <div class="col-sm-5 mb-2">
+                    <input class="form-control me-2" type="date" id="from-date" name="from-date" value="{{ context.from_date }}" aria-label="From">
+                </div>
+                <div class="col-sm-5 mb-2">
+                    <input class="form-control me-2" type="date" id="to-date" name="to-date" value="{{ context.to_date }}" aria-label="To">
+                </div>
+                 <div class="col-lg-2 mb-2">
+                    <button class="btn btn-outline-success" style="width: 100%" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
     <div class="shadow p-5 mb-5 bg-body-tertiary rounded ">
-
-        <div class="row justify-content-md-center adjustment-bottom">
-            <div class="col-3">
-
-            </div>
-            <div class="col-3">
-
-            </div>
-            <div class="col-3">
-
-            </div>
+        <div class="text-center adjustment-bottom fst-italic">
+            <h2>Home Page</h2>
         </div>
-        <div class="row justify-content-md-center">
-            <div class="col-3">
+        {% if current_user.is_authenticated %}
+            {% if context.balances %}
+                <div class="row ">
+                    {% for balance in context.balances %}
+                        <div class="col-lg-4 card-style">
+                            <div class="border border-secondary rounded card-content shadow p-3 mb-5">
+                                <h2>{{ balance.coin }}</h2>
+                                <div>
+                                    Amount: {{ balance.amount }}
+                                </div>
+                                <div>
+                                    Value: {{ balance.value }}
+                                </div>
+                                <br>
+                                <a class="btn btn-outline-secondary" href="{{ url_for('blueprint.edit_balance', balance_id=balance.id)}}">Edit</a>
+                                <a class="btn btn-outline-danger" href="{{ url_for('blueprint.delete_balance', balance_id=balance.id)}}">Delete</a>
+                            </div>
 
-            </div>
-            <div class="col-3">
-
-            </div>
-            <div class="col-3">
-
-            </div>
-        </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h1>Let's add our first balance <a class="link-success" href="{{ url_for('blueprint.add_balance')}}">$$$</a></h1>
+            {% endif %}
+        {% else %}
+            <h1><a href="{{ url_for('blueprint.login')}}">Join</a> US :)</h1>
+        {% endif %}
     </div>
 {% endblock %}

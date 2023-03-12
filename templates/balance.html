@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="shadow p-5 mb-5 bg-body rounded">
+        <div class="text-center adjustment-bottom"><h2>Add Balance Page</h2></div>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.coin.label(class="form-label") }}
+                    {{ form.coin(class="form-control") }}
+                    {% for error in form.coin.errors %}
+                        <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.amount.label(class="form-label") }}
+                    {{ form.amount(size=30, class="form-control") }}
+                    {% for error in form.amount.errors %}
+                        <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
+                </div>
+
+                {{ form.submit(class="btn btn-outline-primary") }}
+            </form>
+    </div>
+{% endblock %}

@@ -2,7 +2,7 @@ from os import path
 from setuptools import setup, find_packages
 
 
-# Get the version from the VERSION file
+# """Get the version from the VERSION file"""
 with open(path.join(path.dirname(__file__), 'VERSION'), encoding='utf-8') as f:
     version = f.read().strip()
 

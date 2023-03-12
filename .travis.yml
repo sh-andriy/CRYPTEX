@@ -4,7 +4,8 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - find . -type f -name "*.py" -not -path './venv*' | xargs pylint --rcfile=pylint.cfg
+  - find . -type f -name "*.py" -not -path './venv*' -not -path './migrations*' | xargs pylint --rcfile=pylint.cfg
   - coverage run --source=. -m pytest
+  - coverage report
 after_success:
     - coveralls
