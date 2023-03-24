@@ -3,7 +3,7 @@
 <hr>
 
 
-![CRYPTEX image](CRYPTEX.png)
+![CRYPTEX image](CRYPTEXv2.png)
 
 <p>
 
